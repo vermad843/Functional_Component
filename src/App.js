@@ -1,55 +1,48 @@
-import React, {useState} from 'react';
+import React, { useState} from 'react'
 
-import './App.css';
+const App = () => {
+   const [newTodo, setNewTodo] = useState('');
+   const [todos,setTodos] = useState([]);
 
-function App() {
+   const onNewTodoChange = (e) => {
+    setNewTodo(e.target.value);
+  };
 
-   const [title,SetTitle] = useState('Hello World!!');
-   const [newTodo,setNewTodo] = useState('');
-   const [todos, setTodos] = useState([{
-     title : 'Learn React',
-     done : false
-   }]);
-   
-
-   const formSubmitted = (e) => {
-     e.preventDefault();  
-     setTodos({
-       todos : [
-         ...todos,
-         {
-           title : newTodo,
-           done : false
-         }
-       ]
-      });
-   } 
-
-   const handleChanged = (e) => {
-      setNewTodo({
-        newTodo : e.target.value
-      })
-   }
+  const formSubmitted = (e) => {
+     e.preventDefault();
+     setTodos([
+       ...todos,
+       {
+         id : todos.length + 1,
+         content : newTodo,
+         done : false,
+       }
+     ]);
+     setNewTodo('');
+  };
 
   return (
-    <div className="App">
-        <h1>{title}</h1>
+    <div className = "App">
         <form onSubmit = {formSubmitted}>
-             <label htmlFor = "newTodo">NewTodo</label>
-             <input onChange = {handleChanged} id = "newTodo" name = "newTodo"/>
-             <button type = "submit">
-                Add Todo
-             </button>
-        </form>
-        <ul>
-          {todos.map((todo) => {
-            return <li>
-               {todo.title}
-            </li>
-          })}
-        </ul>
+            <label htmlFor = "newTodo">Enter a Todo:</label>
+            <input
+              id = "newTodo"
+              name = "newTodo" 
+              value = {newTodo}
+              onChange = {onNewTodoChange}
+             />
+             <button type = "submit">Add Todo</button>
+       </form>
+       <ul>
+             {todos.map((todo) => (
+               <li key = {todo.id}>
+                 {todo.content}
+               </li>
+             ))}
+          </ul>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
+
